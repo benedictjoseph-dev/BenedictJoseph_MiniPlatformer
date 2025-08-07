@@ -54,7 +54,7 @@ public class LevelEnd : MonoBehaviour
             if (CoinManager.instance != null &&
                 CoinManager.instance.coinCount >= CoinManager.instance.GetRequiredCoinCount())
             {
-                SceneManager.LoadScene(nextSceneName);
+                StartCoroutine(LoadNextScene());
             }
         }
     }
@@ -67,5 +67,15 @@ public class LevelEnd : MonoBehaviour
             Vector3 spawnPos = messageSpawnPoint != null ? messageSpawnPoint.position : transform.position;
             msg.transform.position = Camera.main.WorldToScreenPoint(spawnPos);
         }
+    }
+
+    private System.Collections.IEnumerator LoadNextScene()
+    {
+        BackgroundMusicManager music = Object.FindAnyObjectByType<BackgroundMusicManager>();
+        if (music != null)
+            music.FadeOutMusic();
+
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(nextSceneName);
     }
 }

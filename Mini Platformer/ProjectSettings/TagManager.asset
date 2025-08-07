@@ -7,6 +7,8 @@ TagManager:
   - Trap
   - Collectible
   - LevelEnd
+  - Trampoline
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
+  - Enemy
   - 
   - 
   - 
