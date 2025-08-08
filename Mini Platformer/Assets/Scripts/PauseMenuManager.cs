@@ -9,6 +9,7 @@ public class PauseMenuManager : MonoBehaviour
 
     void Update()
     {
+        // ESC key toggles pause/resume
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
@@ -20,6 +21,7 @@ public class PauseMenuManager : MonoBehaviour
 
     public void Resume()
     {
+        // hide menu and unfreeze the game
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
@@ -27,6 +29,7 @@ public class PauseMenuManager : MonoBehaviour
 
     public void Pause()
     {
+        // show menu and freeze game
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
@@ -34,12 +37,14 @@ public class PauseMenuManager : MonoBehaviour
 
     public void RestartLevel()
     {
+        // reload current lvl, make sure timeScale is back to normal
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void LoadMainMenu()
     {
+        // go back to main menu scene
         Time.timeScale = 1f;
         SceneManager.LoadScene("Main Menu");
     }

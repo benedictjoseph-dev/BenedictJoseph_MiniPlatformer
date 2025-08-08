@@ -27843,6 +27843,10 @@ MonoBehaviour:
   floatingMessagePrefab: {fileID: 992824303373916415, guid: b34823f65a105284598104216e0c697b, type: 3}
   messageSpawnPoint: {fileID: 1666322174}
   uiCanvas: {fileID: 203403712}
+  deniedSFX: {fileID: 8300000, guid: 8e02e9fca9b12a148927e01e89b2dd79, type: 3}
+  successSFX: {fileID: 8300000, guid: d14ef181befdc614bba85d5f7136e713, type: 3}
+  sfxVolume: 1
+  successParticles: {fileID: 5472435839478280937, guid: 68ca58ac2ce89fa498884c0ab071a3b3, type: 3}
 --- !u!61 &1666322173
 BoxCollider2D:
   m_ObjectHideFlags: 0

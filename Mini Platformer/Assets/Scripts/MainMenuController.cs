@@ -10,11 +10,11 @@ public class MainMenuController : MonoBehaviour
     {
         if (clickSound != null) clickSound.Play();
 
-        // Stop background music before loading next scene
+        // kill background music obj so it doesnt carry over to the next scene
         BackgroundMusicManager music = FindAnyObjectByType<BackgroundMusicManager>();
         if (music != null) Destroy(music.gameObject);
 
-        // Delay load to let the click sound finish
+        // lil delay so click sfx can be heard before scene switch
         StartCoroutine(LoadSceneAfterDelay("Level 1", 0.2f));
     }
 

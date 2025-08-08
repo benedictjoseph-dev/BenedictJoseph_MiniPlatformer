@@ -1,2 +1,17 @@
 fileFormatVersion: 2
 guid: 795a85f0c8020bc47a7cd888a7737338
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - floatingMessagePrefab: {instanceID: 0}
+  - messageSpawnPoint: {instanceID: 0}
+  - uiCanvas: {instanceID: 0}
+  - deniedSFX: {fileID: 8300000, guid: 8e02e9fca9b12a148927e01e89b2dd79, type: 3}
+  - successSFX: {fileID: 8300000, guid: d14ef181befdc614bba85d5f7136e713, type: 3}
+  - successParticles: {fileID: 5472435839478280937, guid: 68ca58ac2ce89fa498884c0ab071a3b3, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

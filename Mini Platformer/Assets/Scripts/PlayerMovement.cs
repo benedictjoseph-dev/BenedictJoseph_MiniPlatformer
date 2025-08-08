@@ -15,8 +15,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump")]
     public float jumpForce = 14f;
-    public float coyoteTime = 0.2f;
-    public float jumpBufferTime = 0.2f;
+    public float coyoteTime = 0.2f; // little grace period after leaving ground
+    public float jumpBufferTime = 0.2f; // buffer to catch early jump press
     private float coyoteTimeCounter;
     private float jumpBufferCounter;
     private bool jumpUsed;
@@ -41,12 +41,13 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private TrailRenderer trail;
-    private CinemachineImpulseSource impulseSource;
+    private CinemachineImpulseSource impulseSource; // *for future development*
     private AudioSource audioSource;
     private float originalGravityScale;
 
     void Awake()
     {
+        // cache refs for performance & readability
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         trail = GetComponent<TrailRenderer>();
@@ -55,12 +56,12 @@ public class PlayerMovement : MonoBehaviour
         originalGravityScale = rb.gravityScale;
 
         if (trail != null)
-            trail.emitting = false;
+            trail.emitting = false; // keep dash trail off at start
     }
 
     void Update()
     {
-        if (isDashing) return;
+        if (isDashing) return; // lock controls during dash
 
         HandleInput();
         HandleGroundCheck();
@@ -71,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        // movement physics updates here
         if (!isDashing)
         {
             rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
@@ -81,12 +83,14 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
+        // flip sprite based on direction
         if (horizontalInput != 0)
         {
             facingRight = horizontalInput > 0;
             spriteRenderer.flipX = facingRight;
         }
 
+        // start jump buffer on press
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jumpBufferCounter = jumpBufferTime;
@@ -103,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isGrounded)
         {
-            coyoteTimeCounter = coyoteTime;
+            coyoteTimeCounter = coyoteTime; // reset coyote timer
             jumpUsed = false;
         }
         else
@@ -114,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleJump()
     {
+        // jump if buffer + coyote time still active
         if (jumpBufferCounter > 0 && coyoteTimeCounter > 0 && !jumpUsed)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -124,10 +129,12 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleGravity()
     {
+        // faster fall
         if (rb.linearVelocity.y < 0)
         {
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
+        // cut jump short if space released
         else if (rb.linearVelocity.y > 0 && !Input.GetKey(KeyCode.Space))
         {
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
@@ -157,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
         float dashDirection = facingRight ? 1f : -1f;
 
         if (audioSource != null)
-            audioSource.Play();
+            audioSource.Play(); // dash sfx
 
         if (trail != null)
             trail.emitting = true;
@@ -183,20 +190,21 @@ public class PlayerMovement : MonoBehaviour
 
     void Die()
     {
-        impulseSource?.GenerateImpulse();
+        impulseSource?.GenerateImpulse(); // lil camera shake (*for future development*)
         StartCoroutine(RespawnWithTinyDelay());
     }
 
     IEnumerator RespawnWithTinyDelay()
     {
         rb.linearVelocity = Vector2.zero;
-        enabled = false;
-        yield return new WaitForSeconds(0.05f);
+        enabled = false; // stop movement
+        yield return new WaitForSeconds(0.05f); // tiny delay so it feels snappy
         PlayerRespawn.Instance.Respawn();
     }
 
     public void ResetState()
     {
+        // reset all movement/dash/jump variables to default
         isDashing = false;
         dashCooldownTimer = 0f;
         jumpBufferCounter = 0f;

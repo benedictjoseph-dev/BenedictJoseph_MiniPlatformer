@@ -5,12 +5,14 @@ public class BackgroundMusicManager : MonoBehaviour
 {
     public static BackgroundMusicManager Instance;
 
+    [Header("Audio Settings")]
     public AudioSource audioSource;
     public AudioClip levelMusic;
     public AudioClip mainMenuMusic;
 
     private void Awake()
     {
+        // Make sure there’s only one of these (singleton)
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -18,13 +20,14 @@ public class BackgroundMusicManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject); // keep it when scenes change
 
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
 
+        // Play music for whatever scene we start in
         PlayCorrectMusicForScene(SceneManager.GetActiveScene().name);
     }
 
@@ -43,10 +46,7 @@ public class BackgroundMusicManager : MonoBehaviour
         {
             PlayLevelMusic();
         }
-        else
-        {
-            // Additonal scene music  can be handeled here
-        }
+        // Add more if you have extra scenes with unique tracks
     }
 
     public void PlayMainMenuMusic()
@@ -87,7 +87,7 @@ public class BackgroundMusicManager : MonoBehaviour
         }
 
         audioSource.Stop();
-        audioSource.volume = startVolume;
+        audioSource.volume = startVolume; // reset for next time
     }
 
     public void StopMusic()

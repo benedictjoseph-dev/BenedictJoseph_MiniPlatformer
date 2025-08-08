@@ -7,19 +7,20 @@ public class CoinManager : MonoBehaviour
 
     public int coinCount = 0;
     public TextMeshProUGUI coinText;
-
     public Collider2D levelEndCollider;
 
     [SerializeField] private int totalCoins = 5;
 
-    void Awake()
+    private void Awake()
     {
+        // singleton so we dont spawn duplicates
         if (instance == null) instance = this;
         else Destroy(gameObject);
     }
 
-    void Start()
+    private void Start()
     {
+        // count how many coins are actually in the scene at start
         totalCoins = FindObjectsByType<Collectible>(FindObjectsSortMode.None).Length;
         UpdateUI();
     }
@@ -29,23 +30,24 @@ public class CoinManager : MonoBehaviour
         coinCount++;
         UpdateUI();
 
+        // open the level exit if we have all the coins
         if (coinCount >= totalCoins)
-        {
             UnlockLevelEnd();
-        }
     }
+
     public int GetRequiredCoinCount()
     {
         return totalCoins;
     }
 
-    void UnlockLevelEnd()
+    private void UnlockLevelEnd()
     {
+        // switch to trigger so player can go through
         if (levelEndCollider != null)
-            levelEndCollider.isTrigger = true; //  enables trigger once all coins collected
+            levelEndCollider.isTrigger = true;
     }
 
-    void UpdateUI()
+    private void UpdateUI()
     {
         coinText.text = $"COINS: {coinCount}";
     }

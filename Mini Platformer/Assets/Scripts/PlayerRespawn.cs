@@ -34,8 +34,7 @@ public class PlayerRespawn : MonoBehaviour
     {
         // Fully disable physics & movement
         playerMovement.enabled = false;
-        rb.linearVelocity = Vector2.zero;
-        rb.linearVelocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;  // Correct property name
         rb.gravityScale = 1f;
 
         // Move player to checkpoint
